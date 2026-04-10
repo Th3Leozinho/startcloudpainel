@@ -1,16 +1,8 @@
-# Usar a imagem base com PHP e Composer já instalados
 FROM php:8.3-cli-alpine
 
-# Definir o diretório de trabalho
 WORKDIR /var/www
 
-# Copiar composer.json e composer.lock para o diretório de trabalho
-COPY composer.json composer.lock ./
-
-# Copiar o restante da aplicação (incluindo o arquivo artisan)
-COPY . .
-
-# Instalar as dependências do sistema e extensões PHP necessárias para Laravel
+# Instala dependências do sistema e extensões PHP
 RUN apk add --no-cache \
     bash \
     curl \
@@ -23,16 +15,17 @@ RUN apk add --no-cache \
     postgresql-dev \
     libzip-dev \
     icu-dev \
-    build-base \
-    && docker-php-ext-configure gd --with-jpeg --with-freetype \
+    oniguruma-dev \
+    g++ \
+    make \
+    autoconf \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_pgsql zip mbstring xml tokenizer intl
 
+COPY . .
 
-# Instalar Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Instalar dependências do Composer
 RUN composer install --no-dev --no-interaction --prefer-dist --optimize-autoloader
 
-# Rodar o servidor embutido do Laravel (serve) e aceitar conexões de qualquer IP, usando a porta 8000
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
