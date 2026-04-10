@@ -22,8 +22,10 @@ RUN apk add --no-cache \
     freetype-dev \
     postgresql-dev \
     libzip-dev \
+    icu-dev \
+    build-base \
     && docker-php-ext-configure gd --with-jpeg --with-freetype \
-    && docker-php-ext-install gd pdo pdo_pgsql zip mbstring xml tokenizer
+    && docker-php-ext-install gd pdo pdo_pgsql zip mbstring xml tokenizer intl
 
 
 # Instalar Composer
