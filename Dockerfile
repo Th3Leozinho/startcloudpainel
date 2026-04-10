@@ -1,24 +1,19 @@
-FROM php:8.3-cli-alpine
+FROM php:8.3-fpm
 
 WORKDIR /var/www
 
-# Instala dependências do sistema e extensões PHP
-RUN apk add --no-cache \
-    bash \
-    curl \
+RUN apt-get update && apt-get install -y \
     git \
+    curl \
     zip \
     unzip \
     libpng-dev \
-    libjpeg-turbo-dev \
-    freetype-dev \
-    postgresql-dev \
+    libonig-dev \
+    libxml2-dev \
     libzip-dev \
-    icu-dev \
-    oniguruma-dev \
-    g++ \
-    make \
-    autoconf \
+    libpq-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_pgsql zip mbstring xml tokenizer intl
 
