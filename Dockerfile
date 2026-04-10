@@ -12,16 +12,16 @@ COPY . .
 
 # Instalar as dependências do sistema e extensões PHP necessárias para Laravel
 RUN apk add --no-cache \
-        bash \
-        curl \
-        git \
-        zip \
-        unzip \
-        libpng-dev \
-        libjpeg-turbo-dev \
-        freetype-dev \
-        postgresql-dev \
-        libzip-dev \
+    bash \
+    curl \
+    git \
+    zip \
+    unzip \
+    libpng-dev \
+    libjpeg-turbo-dev \
+    freetype-dev \
+    postgresql-dev \
+    libzip-dev \
     && docker-php-ext-configure gd --with-jpeg --with-freetype \
     && docker-php-ext-install gd pdo pdo_pgsql zip mbstring xml tokenizer
 
